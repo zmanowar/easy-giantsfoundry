@@ -6,6 +6,7 @@ import net.runelite.api.Client;
 import net.runelite.api.ScriptID;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.util.Text;
 
 import javax.inject.Inject;
 import java.util.LinkedHashMap;
@@ -30,12 +31,12 @@ public class MouldHelper
     @Inject
     private ClientThread clientThread;
 
-    public void selectBest(int scriptId)
+    public Widget selectBest(int scriptId)
     {
         Widget parent = client.getWidget(MOULD_LIST_PARENT);
         if (parent == null || parent.getChildren() == null)
         {
-            return;
+            return null;
         }
 
         Map<Mould, Widget> mouldToChild = getOptions(parent.getChildren());
@@ -53,7 +54,7 @@ public class MouldHelper
             }
         }
         if (bestWidget != null) {
-            bestWidget.setTextColor(config.mouldHighlightColor().getRGB());
+//            bestWidget.setTextColor(config.mouldHighlightColor().getRGB());
         }
 
         if (scriptId == DRAW_MOULD_LIST_SCRIPT || scriptId == REDRAW_MOULD_LIST_SCRIPT)
@@ -74,16 +75,18 @@ public class MouldHelper
                                 Math.min(finalBestWidget.getOriginalY() - 2, scrollMax - height));
                     }
                 });
+                return bestWidget;
             }
         }
+        return null;
     }
 
     private Map<Mould, Widget> getOptions(Widget[] children) {
         Map<Mould, Widget> mouldToChild = new LinkedHashMap<>();
-        for (int i = 2; i < children.length; i += 17)
+        for (int i = 0; i < children.length; i += 1)
         {
             Widget child = children[i];
-            Mould mould = Mould.forName(child.getText());
+            Mould mould = Mould.forName(Text.removeTags(child.getName()));
             if (mould != null && child.getTextColor() != DISABLED_TEXT_COLOR) {
                 mouldToChild.put(mould, child);
             }

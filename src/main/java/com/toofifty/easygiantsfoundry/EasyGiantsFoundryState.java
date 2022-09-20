@@ -50,6 +50,10 @@ public class EasyGiantsFoundryState
 	@Getter
 	private boolean enabled;
 
+	@Setter
+	@Getter
+	private Widget selectedWidget;
+
 	private final List<Stage> stages = new ArrayList<>();
 	private double heatRangeRatio = 0;
 

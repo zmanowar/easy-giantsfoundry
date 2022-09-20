@@ -64,6 +64,9 @@ public class EasyGiantsFoundryPlugin extends Plugin
 	private FoundryOverlay3D overlay3d;
 
 	@Inject
+	private FoundryWidgetOverlay overlayWidget;
+
+	@Inject
 	private MouldHelper mouldHelper;
 
 	@Inject
@@ -90,6 +93,7 @@ public class EasyGiantsFoundryPlugin extends Plugin
 	{
 		overlayManager.add(overlay2d);
 		overlayManager.add(overlay3d);
+		overlayManager.add(overlayWidget);
 	}
 
 	@Override
@@ -97,6 +101,7 @@ public class EasyGiantsFoundryPlugin extends Plugin
 	{
 		overlayManager.remove(overlay2d);
 		overlayManager.remove(overlay3d);
+		overlayManager.remove(overlayWidget);
 	}
 
 	@Subscribe
@@ -240,7 +245,7 @@ public class EasyGiantsFoundryPlugin extends Plugin
 			|| event.getScriptId() == MouldHelper.SELECT_MOULD_SCRIPT
 			|| event.getScriptId() == MouldHelper.RESET_MOULD_SCRIPT)
 		{
-			mouldHelper.selectBest(event.getScriptId());
+			state.setSelectedWidget(mouldHelper.selectBest(event.getScriptId()));
 		}
 	}
 
